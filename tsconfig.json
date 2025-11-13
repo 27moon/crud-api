@@ -4,10 +4,10 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowImportingTsExtensions": true,
+    "outDir": "dist",
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": false
   },
   "include": ["src"]
 }

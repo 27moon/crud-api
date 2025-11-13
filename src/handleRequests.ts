@@ -1,7 +1,7 @@
 import http from 'http';
 import dotenv from 'dotenv';
-import { HttpStatus, type Users } from './types/types.ts';
-import { generateId } from './helpers.ts';
+import { HttpStatus, type Users } from './types/types';
+import { generateId } from './helpers';
 import { validate as isUuid } from 'uuid';
 
 dotenv.config();
