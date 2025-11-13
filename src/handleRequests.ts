@@ -76,3 +76,82 @@ export function getUser(id: string, res: http.ServerResponse) {
   res.writeHead(HttpStatus.OK, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(user));
 }
+
+export function updateUserInfo(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  id: string
+) {
+  if (!isUuid(id)) {
+    res.writeHead(HttpStatus.BAD_REQUEST, {
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ message: 'Invalid user ID' }));
+    return;
+  }
+
+  const user = users.find((user) => user.id === id);
+
+  if (!user) {
+    res.writeHead(HttpStatus.NOT_FOUND, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'User not found' }));
+    return;
+  }
+
+  let body = '';
+  req.on('data', (chunk) => {
+    body += chunk;
+  });
+
+  req.on('end', () => {
+    try {
+      const data = JSON.parse(body);
+
+      if (!data.username || !data.age || !data.hobbies) {
+        res.writeHead(HttpStatus.BAD_REQUEST, {
+          'Content-Type': 'application/json',
+        });
+        res.end(JSON.stringify({ message: 'Missing required fields' }));
+        return;
+      }
+
+      user.username = data.username;
+      user.age = data.age;
+      user.hobbies = data.hobbies;
+
+      res.writeHead(HttpStatus.OK, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(user));
+    } catch {
+      res.writeHead(HttpStatus.BAD_REQUEST, {
+        'Content-Type': 'application/json',
+      });
+      res.end(JSON.stringify({ message: 'Invalid JSON' }));
+    }
+  });
+}
+
+export function deleteUser(res: http.ServerResponse, id: string) {
+  if (!isUuid(id)) {
+    res.writeHead(HttpStatus.BAD_REQUEST, {
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ message: 'Invalid user ID' }));
+    return;
+  }
+
+  const user = users.find((user) => user.id === id);
+
+  if (!user) {
+    res.writeHead(HttpStatus.NOT_FOUND, {
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ message: 'User not found' }));
+    return;
+  }
+
+  const index = users.indexOf(user);
+  users.splice(index, 1);
+
+  res.writeHead(HttpStatus.NO_CONTENT);
+  res.end();
+}

@@ -1,6 +1,12 @@
 import http from 'http';
 import dotenv from 'dotenv';
-import { getAllUsers, getUser, postUser } from './handleRequests';
+import {
+  deleteUser,
+  getAllUsers,
+  getUser,
+  postUser,
+  updateUserInfo,
+} from './handleRequests';
 import { HttpStatus } from './types/types';
 
 dotenv.config();
@@ -19,6 +25,12 @@ const server = http.createServer((req, res) => {
   } else if (req.url.startsWith('/api/users/') && req.method === 'GET') {
     const id = req.url.split('/')[3];
     getUser(id, res);
+  } else if (req.url.startsWith('/api/users/') && req.method === 'PUT') {
+    const id = req.url.split('/')[3];
+    updateUserInfo(req, res, id);
+  } else if (req.url.startsWith('/api/users/') && req.method === 'DELETE') {
+    const id = req.url.split('/')[3];
+    deleteUser(res, id);
   } else {
     res.writeHead(HttpStatus.NOT_FOUND);
     res.end(JSON.stringify({ message: 'not found' }));
