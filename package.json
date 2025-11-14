@@ -3,10 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start:dev": "ts-node-dev --respawn src/app.ts",
+    "start:dev": "ts-node-dev --respawn src/index.ts",
     "build": "tsc",
     "preview": "vite preview",
-    "start:prod": "npm run build && node dist/app.js"
+    "start:prod": "npm run build && node dist/index.js",
+    "test": "vitest"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",

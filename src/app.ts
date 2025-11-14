@@ -13,7 +13,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 4000;
 
-const server = http.createServer((req, res) => {
+export const server = http.createServer((req, res) => {
   try {
     if (!req.url) return;
     res.setHeader('Content-Type', 'application/json');
@@ -47,8 +47,4 @@ const server = http.createServer((req, res) => {
       })
     );
   }
-});
-
-server.listen(PORT, () => {
-  console.log('all good');
 });
