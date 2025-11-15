@@ -78,7 +78,7 @@ Response 404 Not Found — user does not exist.
 ```
 curl -X POST http://localhost:4000/api/users \
 -H "Content-Type: application/json" \
--d '{"username":"Harry Potter","age":12,"hobbies":[quidditch"]}'
+-d '{"username":"Harry Potter","age":12,"hobbies":["quidditch"]}'
 ```
 
 Response 200 OK — user created.
