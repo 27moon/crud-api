@@ -24,13 +24,18 @@ export function postUser(req: http.IncomingMessage, res: http.ServerResponse) {
     try {
       const data = JSON.parse(body);
 
-      if (!data.username || !data.age || !data.hobbies) {
+      if (
+        !data.username?.trim() ||
+        typeof data.age !== 'number' ||
+        !Array.isArray(data.hobbies) ||
+        !data.hobbies.every((hobby: string) => hobby.trim())
+      ) {
         res.writeHead(HttpStatus.BAD_REQUEST, {
           'Content-Type': 'application/json',
         });
         res.end(
           JSON.stringify({
-            message: 'Does not contain all of the required fields',
+            message: 'Does not contain all of the required fields or the fields are invalid',
           })
         );
         return;
@@ -107,11 +112,16 @@ export function updateUserInfo(
     try {
       const data = JSON.parse(body);
 
-      if (!data.username || !data.age || !data.hobbies) {
+      if (
+        !data.username?.trim() ||
+        typeof data.age !== 'number' ||
+        !Array.isArray(data.hobbies) ||
+        !data.hobbies.every((hobby: string) => hobby.trim())
+      ) {
         res.writeHead(HttpStatus.BAD_REQUEST, {
           'Content-Type': 'application/json',
         });
-        res.end(JSON.stringify({ message: 'Missing required fields' }));
+        res.end(JSON.stringify({ message: 'Missing required fields or the fields are invalid' }));
         return;
       }
 
